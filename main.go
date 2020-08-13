@@ -14,13 +14,13 @@ func main() {
 		// ------------------
 
 		// Parse the data from a line. Each line represents a single query along with the data to query.
-		permissionsByDomain := make(map[string][]string)
 		lineSegments := strings.Split(scanner.Text(), "|")
 
 		// Parse the permissions that are requested
 		requestedPermissions := strings.Split(lineSegments[0], ",")
 
 		// Parse permissions for each domain - permissionsByDomain is a map of domain id's to permissions
+		permissionsByDomain := make(map[string][]string)
 		for _, domainSegment := range lineSegments[1:] {
 			domainData := strings.Split(domainSegment, ",")
 			domainID := domainData[0]
@@ -36,18 +36,27 @@ func main() {
 		filteredPermissions := make(map[string][]string)
 		for domainID, permissions := range permissionsByDomain {
 			for _, permission := range permissions {
-				found := false
 				for _, requestedPermission := range requestedPermissions {
 					if requestedPermission == permission {
-						found = true
+						filteredPermissions[domainID] = append(filteredPermissions[domainID], permission)
 						break
 					}
 				}
-				if found == true {
-					filteredPermissions[domainID] = append(filteredPermissions[domainID], permission)
-				}
 			}
 		}
+
+		// Another triple loop implementation
+		// filteredPermissions := make(map[string][]string)
+		// for _, requestedPermission := range requestedPermissions {
+		// 	for domainID, basePermissions := range permissionsByDomain {
+		// 		for _, basePermission := range basePermissions {
+		// 			if basePermission == requestedPermission {
+		// 				filteredPermissions[domainID] = append(filteredPermissions[domainID], requestedPermission)
+		// 				break
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 		// Implementation with intermediate map lookup
 		// filteredPermissions := make(map[string][]string)
