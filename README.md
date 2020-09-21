@@ -17,3 +17,12 @@ To try out different algorithms - update `main.go` and rebuild.
 time cat input_data.txt | ruby ./main.rb
 ```
 To try out different algorithms - update `main.rb`.
+
+### Rust implementation
+```
+cd lang/rust
+cargo build --release
+cd ..
+time cat input_data.txt | lang/rust/target/release/rust
+```
+To try out different algorithms - update `main.rs`.
